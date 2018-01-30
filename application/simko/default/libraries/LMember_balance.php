@@ -2,11 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class LMember_balance {
+
+	
 	function get_member_balance($idmember) {
 		$ci =& get_instance();
 		$ci->db->where('member.status', 1);
-		$ci->db->join('member_level', 'member.idmember_level = member_level.idmember_level');
-		$ci->db->where('member.idmember', $idmember);
+		$ci->db->join('member', 'member.idmember = history_balance.idmember');
 		$data = $ci->db->get('member');
 		$err_code = 0;
 		$remaining_balance = 0;

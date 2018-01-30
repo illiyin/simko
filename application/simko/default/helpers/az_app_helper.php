@@ -267,7 +267,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $select = $ci->azapp->add_select2();
             $select->set_id($id);
             $select->set_name('id'.$id);
-            $select->set_url('data/get_data_account');
+            $select->set_url('master_account/get_data'); // data is not accessible, if able $select->set_url('data/get_data_account');
             $select->set_placeholder('Pilih Akun');
             if (strlen($class) > 0) {
                 $select->add_class($class);

@@ -515,6 +515,7 @@ class Data extends CI_Controller {
 		  	"more" => $morePages
 		  )
 		);
+
 		echo json_encode($results);
 	}
 

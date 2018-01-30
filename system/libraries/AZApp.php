@@ -40,6 +40,11 @@ class CI_AZApp extends CI_AZ {
 		return new $this->CI->azappcrud;
 	}
 
+	public function add_table2() {
+		$this->CI->load->library("AZAppTable");
+		return new $this->CI->azapptable;
+	}
+
 	public function add_modal() {
 		$this->CI->load->library("AZModal");
 		return new $this->CI->azmodal;
@@ -76,7 +81,6 @@ class CI_AZApp extends CI_AZ {
 		$this->CI->load->library("AZFile");
 		return new $this->CI->azfile;
 	}
-
 	public function generate_menu() {
    		$this->CI->config->load('menu');
    		$menu = $this->CI->config->item('menu');

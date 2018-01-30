@@ -9,14 +9,6 @@
             'submenu' => array(),
         ),
         array(
-            "name" => 'piutang_member',
-            'title' => azlang('Piutang Member'),
-            'icon' => 'star',
-            'url' => 'piutangMember',
-            'role' => array(),
-            'submenu' => array(),
-        ),
-        array(
             "name" => 'master_pos',
             'title' => 'Master POS',
             'icon' => 'briefcase',
@@ -125,7 +117,7 @@
             "name" => 'accounting_pos',
             'title' => 'Accounting POS',
             'icon' => 'dollar',
-            'url' => '#',
+            'url' => '',
             'role' => array(),
             'submenu' => array(
                 array(
@@ -146,7 +138,7 @@
                 array(
                     'name' => 'accounting_pos_piutang_member',
                     'title' => 'Piutang Member',
-                    'url' => '#',
+                    'url' => 'piutangmember',
                 ),
                 array(
                     'name' => 'accounting_pos_pembayaran_group',

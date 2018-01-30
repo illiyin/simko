@@ -7,7 +7,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once("AZ.php");
 
-class CI_AZAppCRUD extends CI_AZ {
+class CI_AZAppTable extends CI_AZ {
 	protected $ci = "";
 	protected $column = "";
 	protected $sort = "";
@@ -41,8 +41,9 @@ class CI_AZAppCRUD extends CI_AZ {
 	protected $special_filter = array();
 	protected $single_filter = true;
 	protected $custom_style = "";
-	protected $edit = true;
-	protected $delete = true;
+	protected $edit = false;
+	protected $delete = false;
+	protected $print = false;
 	protected $btn_add = true;
 	protected $limit_entries = true;
 	protected $btn_save_modal = true;
@@ -178,6 +179,10 @@ class CI_AZAppCRUD extends CI_AZ {
 		return $this->url_delete = $data;
 	}
 
+	public function set_url_print($data) {
+		return $this->url_print = $data;
+	}
+
 	public function set_tinfo($data) {
 		return $this->tinfo = $data;
 	}
@@ -220,6 +225,10 @@ class CI_AZAppCRUD extends CI_AZ {
 
 	public function set_delete($data) {
 		return $this->delete = $data;
+	}
+
+	public function set_print($data) {
+		return $this->print = $data;
 	}
 
 	public function set_btn_add($data) {
@@ -297,9 +306,7 @@ class CI_AZAppCRUD extends CI_AZ {
 	public function add_aodata($key, $data) {
 		return $this->aodata[$key] = $data;
 	}
-	// public function set_id($data){
-	// 	return $this->id = $data;
-	// }
+
 	public function render() {
 		$ci =& get_instance();
 
@@ -850,8 +857,7 @@ class CI_AZAppCRUD extends CI_AZ {
 			
 		$iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength; 
 		$iDisplayStart = intval(azarr($_REQUEST, 'iDisplayStart'));
-
-		$sEcho = intval(isset($_REQUEST['sEcho'])?1:$_REQUEST['sEcho']);
+		$sEcho = intval($_REQUEST['sEcho']);
 
 		$this->ci->db->limit($iDisplayLength);
 		$this->ci->db->offset($iDisplayStart);
@@ -974,7 +980,7 @@ class CI_AZAppCRUD extends CI_AZ {
 		}  
 
 		$ambil = $this->ci->db->get($table);
-// echo $this->ci->db->last_query();die;
+		// echo $this->ci->db->last_query();die;
 		$arr_column_show = array();
 		foreach($column_show as $ps_value){
 			$xvalue = explode(".", $ps_value);
@@ -1004,10 +1010,13 @@ class CI_AZAppCRUD extends CI_AZ {
 			if ($this->delete) {
 				$btn_ .= '<button class="btn btn-danger btn-xs btn-delete-'.$this->id.'" data_id= "'.$value['id'.$table].'"><span class="glyphicon glyphicon-remove"></span> '.azlang('Delete').'</button>';
 			}
+			// if ($this->print) {
+			// 	$btn_ .= '<button class="btn btn-default btn-xs btn-print-'.$this->id.'" data_id= "'.$value['id'.$table].'"><span class="glyphicon glyphicon-print"></span> '.azlang('Print').'</button>';
+			// }
 
 			if (strlen($this->custom_btn) > 0) {
 				$custom_button = $this->custom_btn;
-				//$btn_ .= $this->ci->$custom_button($value);
+				$btn_ .= $this->ci->$custom_button($value);
 			}
 
 			$arr_get["action"] = $btn_;
@@ -1074,9 +1083,6 @@ class CI_AZAppCRUD extends CI_AZ {
 		$records["iTotalDisplayRecords"] = $iTotalRecords;
 
 		return json_encode($records);
-	}
-	public function last_query(){
-		return $this->ci->db->last_query();
 	}
 
 	public function generate_modal() {

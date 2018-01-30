@@ -1,14 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class piutangMember extends AZ_Controller {
+class Accounting_pos extends AZ_Controller {
 	public function __construct() {
         parent::__construct();
         $this->load->helper('az_auth');
-        az_check_auth('form_piutang');
+        az_check_auth('accounting_pos_piutang_member');
     }
 
-	public function index(){
+    public function index(){
+
+    }
+
+	public function piutang_member(){
 		$this->load->library('AZApp');
 		$app = $this->azapp;
 		$data_header['title'] = azlang('Piutang Member');

@@ -376,9 +376,13 @@ form .form-inline select{
 							<div class="input-nominal">
 								<input type="text" name="nominal_bayar" value="" class="form-control input-lg" placeholder="Nominal">
 							</div>
-							<div class="form-group form-inline">
-								<label>Akun Penerima: </label>
-									<?php echo az_select_account(); ?>
+							<div class="form-inline">
+								<label for="akun_penerima">Akun Penerima: </label>
+								<select name="penerima" id="akun_penerima" class="form-control">
+									<option value="">-- Pilih --</option>
+									<option value="1">Susi</option>
+									<option value="2">Dona</option>
+								</select>
 								<input type="checkbox" name="cetak" value="1" id="yes_cetak">
 								<label for="yes_cetak">Cetak?</label>
 							</div>
