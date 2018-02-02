@@ -297,9 +297,19 @@ class CI_AZAppCRUD extends CI_AZ {
 	public function add_aodata($key, $data) {
 		return $this->aodata[$key] = $data;
 	}
-	// public function set_id($data){
-	// 	return $this->id = $data;
-	// }
+	public function set_id($data){
+		if (strlen($this->id_table) == 0) {
+			$this->id = $data;
+			$this->id_table=$this->id;
+		}else{
+			$this->id = $data;
+			$this->id_table=$data;
+		}
+		// $this->id = $data;
+		// $this->id_table = $data;
+		return $data;
+		return $this->id = $data;
+	}
 	public function render() {
 		$ci =& get_instance();
 
@@ -320,14 +330,14 @@ class CI_AZAppCRUD extends CI_AZ {
 
 		if (strlen($this->top_filter) > 0) {
 			$table .= '
-				<div class="form-top-filter form-top-filter-'.$this->id.'">
-					<div class="form-top-filter-hide form-top-filter-hide-'.$this->id.'">
+				<div class="form-top-filter form-top-filter-'.$this->id_table.'">
+					<div class="form-top-filter-hide form-top-filter-hide-'.$this->id_table.'">
 						<i class="fa fa-chevron-circle-down"></i>
 					</div>
-					<div class="form-top-filter-body-'.$this->id.'">
+					<div class="form-top-filter-body-'.$this->id_table.'">
 						'.$this->top_filter.'
 					    <div>
-					    	<button class="btn btn-info" id="btn_top_filter_'.$this->id.'" type="button"><i class="fa fa-search"></i> &nbsp;Filter</button>
+					    	<button class="btn btn-info" id="btn_top_filter_'.$this->id_table.'" type="button"><i class="fa fa-search"></i> &nbsp;Filter</button>
 					    	'.$this->top_filter_btn.'
 					    </div>
 					</div>
@@ -337,7 +347,7 @@ class CI_AZAppCRUD extends CI_AZ {
 
 		$table .= "<div class='".$btn_add_position." btn-top-table'>";
 		if ($this->btn_add) {
-			$table .= '<button class="btn btn-primary az-btn-primary btn-add-'.$this->id.'" type="button"><span class="glyphicon glyphicon-plus"></span> '.azlang('Add').'</button>';
+			$table .= '<button class="btn btn-primary az-btn-primary btn-add-'.$this->id_table.'" type="button"><span class="glyphicon glyphicon-plus"></span> '.azlang('Add').'</button>';
 		}
 
 		if (strlen($this->btn_top_custom) > 0) {
@@ -345,24 +355,24 @@ class CI_AZAppCRUD extends CI_AZ {
 		}
 
 		$table .= '
-			&nbsp;&nbsp;<button class="btn btn-info btn-option-table btn-select-all-'.$this->id.' btn-xs" type="button"><i class="fa fa-check-square-o"></i> '.azlang('Select All').'</button>
+			&nbsp;&nbsp;<button class="btn btn-info btn-option-table btn-select-all-'.$this->id_table.' btn-xs" type="button"><i class="fa fa-check-square-o"></i> '.azlang('Select All').'</button>
 
-			&nbsp;&nbsp;<button class="btn btn-info btn-option-table btn-unselect-all-'.$this->id.' btn-xs" type="button"><i class="fa fa-square-o"></i> '.azlang('Clear Selection').'</button>
+			&nbsp;&nbsp;<button class="btn btn-info btn-option-table btn-unselect-all-'.$this->id_table.' btn-xs" type="button"><i class="fa fa-square-o"></i> '.azlang('Clear Selection').'</button>
 
-			&nbsp;&nbsp;<button class="btn btn-danger btn-option-table btn-delete-selected-'.$this->id.' btn-xs" type="button"><span class="glyphicon glyphicon-remove"></span> '.azlang('Delete Selection Data').'</button>';
+			&nbsp;&nbsp;<button class="btn btn-danger btn-option-table btn-delete-selected-'.$this->id_table.' btn-xs" type="button"><span class="glyphicon glyphicon-remove"></span> '.azlang('Delete Selection Data').'</button>';
 
 		$txt_selected_button = '';
 		foreach ($this->selected_button as $key => $value) {
-			$table .= '&nbsp;&nbsp;<button class="btn btn-success btn-'.$key.'-selected-'.$this->id.' btn-xs" type="button"><span class="glyphicon glyphicon-th-large"></span> '.$value.'</button>';
-			$txt_selected_button = ', .btn-'.$key.'-selected-'.$this->id;
+			$table .= '&nbsp;&nbsp;<button class="btn btn-success btn-'.$key.'-selected-'.$this->id_table.' btn-xs" type="button"><span class="glyphicon glyphicon-th-large"></span> '.$value.'</button>';
+			$txt_selected_button = ', .btn-'.$key.'-selected-'.$this->id_table;
 		}
 
-		$table .= '&nbsp;&nbsp;<span class="selected-data-'.$this->id.'"></span>
+		$table .= '&nbsp;&nbsp;<span class="selected-data-'.$this->id_table.'"></span>
 			';
 
 		$table .= "</div>";
 
-		$table .= "<table class='".$this->class." az-table table table-bordered table-striped table-condensed table-hover dt-responsive display nowrap' id='".$this->id."'>";
+		$table .= "<table class='".$this->class." az-table table table-bordered table-striped table-condensed table-hover dt-responsive display nowrap' id='".$this->id_table."'>";
 		$table .= "	<thead>";
 
 		$table .= "<tr role='row' class='heading'>";
@@ -400,7 +410,7 @@ class CI_AZAppCRUD extends CI_AZ {
 		}
 		$table .= "</tr>";
 
-		if (count($this->special_filter) > 0) {
+		if (count($this->special_filter) > 0){
 			$table .= "<tr role='row' class='filter'>";
 			$table .= "<td></td>";
 			$c_special_filter = count($this->special_filter);
@@ -446,6 +456,28 @@ class CI_AZAppCRUD extends CI_AZ {
 			if (strlen($this->url_save) == 0) {
 				$this->url_save = "app_url+'".$this->id."/save'";
 			}
+		}else{
+			if (strlen($this->url) == 0) {
+				$this->url = "app_url+'".$this->id."/get'";
+			}else{
+				$this->url = "app_url+'".$this->id."/".$this->url."'";
+			}
+			if (strlen($this->url_edit) == 0) {
+				$this->url_edit = "app_url+'".$this->id."/edit'";
+			}else{
+				$this->url_edit = "app_url+'".$this->id."/".$this->url."'";
+			}
+
+			if (strlen($this->url_delete) == 0) {
+				$this->url_delete = "app_url+'".$this->id."/delete'";
+			}else{
+				$this->url_delete = "app_url+'".$this->id."/".$this->url."'";
+			}
+			if (strlen($this->url_save) == 0) {
+				$this->url_save = "app_url+'".$this->id."/save'";
+			}else{
+				$this->url_save = "app_url+'".$this->id."/".$this->url."'";
+			}
 		}
 
 		$data_save_js = "{}";
@@ -460,15 +492,15 @@ class CI_AZAppCRUD extends CI_AZ {
 
 
 		$js_table = '
-				generate_table_'.$this->id.'();
-				function generate_table_'.$this->id.'(){
+				generate_table_'.$this->id_table.'();
+				function generate_table_'.$this->id_table.'(){
 				    var total_column = [];
-				    var column = jQuery("#'.$this->id.' thead tr:eq(0) th").length;
+				    var column = jQuery("#'.$this->id_table.' thead tr:eq(0) th").length;
 				    for(var i = 0;i<column;i++){
 				        total_column.push(null);
 				    }
 				       
-				    jQuery("#'.$this->id.'").dataTable({
+				    jQuery("#'.$this->id_table.'").dataTable({
 				        "bServerSide": true,
 				        "sAjaxSource": '.$this->url.',
 				        "bFilter": true,
@@ -494,7 +526,7 @@ class CI_AZAppCRUD extends CI_AZ {
 		                    	var clear_id_filter = id_filter.substring(2);
 		                    	aoData.push({"name": "cfilter["+clear_id_filter+"]", "value": jQuery(this).val()});
 						    });
-						    jQuery(".form-top-filter-'.$this->id.' .element-top-filter").each(function() {
+						    jQuery(".form-top-filter-'.$this->id_table.' .element-top-filter").each(function() {
 						    	var id_filter = jQuery(this).attr("data-id");
 						    	var value_filter = jQuery(this).val();
 						    	var con_value = "";
@@ -538,7 +570,7 @@ class CI_AZAppCRUD extends CI_AZ {
 		                "drawCallback": function( settings ) {
 					        var api = this.api();
 					        var json = api.ajax.json();
-					        callback_table_complete_'.$this->id.'(json);
+					        callback_table_complete_'.$this->id_table.'(json);
 					    },
 					    "language":{
 						    "sProcessing":   "'.azlang('Processing...').'",
@@ -560,102 +592,102 @@ class CI_AZAppCRUD extends CI_AZ {
 				    });
 				}
 
-				function callback_table_complete_'.$this->id.'(json) {
+				function callback_table_complete_'.$this->id_table.'(json) {
 					'.$this->callback_table_complete.';
 				}
 
-				var callback_edit_'.$this->id.' = function(response) {
+				var callback_edit_'.$this->id_table.' = function(response) {
 			    	'.$this->callback_edit.'
 			    };
 
-				jQuery("body").on("click", ".btn-edit-'.$this->id.'", function(){
+				jQuery("body").on("click", ".btn-edit-'.$this->id_table.'", function(){
 			        var id = jQuery(this).attr("data_id");
-			        edit('.$this->url_edit.', id, "'.$this->form.'", "'.$this->id.'", callback_edit_'.$this->id.');
+			        edit('.$this->url_edit.', id, "'.$this->form.'", "'.$this->id_table.'", callback_edit_'.$this->id_table.');
 			    });
 
-			    var callback_delete_'.$this->id.' = function(response) {
+			    var callback_delete_'.$this->id_table.' = function(response) {
 			    	'.$this->callback_delete.'
 			    };
 
-			    jQuery("body").on("click", ".btn-delete-'.$this->id.'", function(){
+			    jQuery("body").on("click", ".btn-delete-'.$this->id_table.'", function(){
 			        var id = jQuery(this).attr("data_id");
-			        remove('.$this->url_delete.', id, "'.$this->id.'", callback_delete_'.$this->id.');
+			        remove('.$this->url_delete.', id, "'.$this->id_table.'", callback_delete_'.$this->id_table.');
 			    });
 
-			    var callback_save_'.$this->id.' = function(response) {
+			    var callback_save_'.$this->id_table.' = function(response) {
 			    	'.$this->callback_save.'
 			    };
 
-			    var callback_add_'.$this->id.' = function() {
+			    var callback_add_'.$this->id_table.' = function() {
 			    	'.$this->callback_add.'
 			    };
 
-			    var data_save_'.$this->id.' = '.$data_save_js.';
+			    var data_save_'.$this->id_table.' = '.$data_save_js.';
 
-			    jQuery("body").on("click", ".btn-save-'.$this->id.'", function(){	
-			        save('.$this->url_save.', "'.$this->form.'", "'.$this->id.'", callback_save_'.$this->id.', data_save_'.$this->id.');
+			    jQuery("body").on("click", ".btn-save-'.$this->id_table.'", function(){	
+			        save('.$this->url_save.', "'.$this->form.'", "'.$this->id_table.'", callback_save_'.$this->id_table.', data_save_'.$this->id_table.');
 			    });
 
-			    jQuery("body").on("click", ".btn-add-'.$this->id.'", function(){
+			    jQuery("body").on("click", ".btn-add-'.$this->id_table.'", function(){
 			        clear();
 			        jQuery(".modal-title span").text("'.azlang('Add').'");
-			        show_modal("'.$this->id.'");
-			        callback_add_'.$this->id.'();
+			        show_modal("'.$this->id_table.'");
+			        callback_add_'.$this->id_table.'();
 			        
 	                jQuery(".az-image-container .az-image img").attr("src", base_url + "assets/images/no-image.jpg");
 	                jQuery(".az-image-file-div").show();
 			    });
 
-			    jQuery("#btn_filter_'.$this->id.'").click(function(){
-		            var dtable = $("#'.$this->id.'").dataTable({bRetrieve:true});
+			    jQuery("#btn_filter_'.$this->id_table.'").click(function(){
+		            var dtable = $("#'.$this->id_table.'").dataTable({bRetrieve:true});
 		            dtable.fnDraw();
 		        });
 
-		        jQuery("#btn_top_filter_'.$this->id.'").click(function(){
-		            var dtable = $("#'.$this->id.'").dataTable({bRetrieve:true});
+		        jQuery("#btn_top_filter_'.$this->id_table.'").click(function(){
+		            var dtable = $("#'.$this->id_table.'").dataTable({bRetrieve:true});
 		            dtable.fnDraw();
 		        });
  
- 				jQuery(document).on("click", ".az-table#'.$this->id.' tbody tr td", function (event) {
+ 				jQuery(document).on("click", ".az-table#'.$this->id_table.' tbody tr td", function (event) {
 			        var btn = jQuery(this).find("button");
 			        if (btn.length == 0) {
-			            var selected = check_table_'.$this->id.'();
- 						init_selected_table_'.$this->id.'();
+			            var selected = check_table_'.$this->id_table.'();
+ 						init_selected_table_'.$this->id_table.'();
 			        }
 			    });
 
- 				jQuery(".btn-select-all-'.$this->id.'").on("click", function() {
- 					sel_un_all_'.$this->id.'("select");
+ 				jQuery(".btn-select-all-'.$this->id_table.'").on("click", function() {
+ 					sel_un_all_'.$this->id_table.'("select");
  				});
 
- 				jQuery(".btn-unselect-all-'.$this->id.'").on("click", function() {
- 					sel_un_all_'.$this->id.'("unselect");
+ 				jQuery(".btn-unselect-all-'.$this->id_table.'").on("click", function() {
+ 					sel_un_all_'.$this->id_table.'("unselect");
  				});
 
- 				jQuery(".az-table#'.$this->id.'").on("draw.dt", function () {
- 					init_selected_table_'.$this->id.'();
+ 				jQuery(".az-table#'.$this->id_table.'").on("draw.dt", function () {
+ 					init_selected_table_'.$this->id_table.'();
  				});
 
- 				jQuery(document).on("hidden.bs.modal", ".modal", function () {
- 					sel_un_all_'.$this->id.'();
+ 				jQuery(document).on("hiden.bs.modal", ".modal", function () {
+ 					sel_un_all_'.$this->id_table.'();
  				});
 
- 				jQuery(".btn-delete-selected-'.$this->id.'").on("click", function() {
- 					var id_delete = check_table_'.$this->id.'();
- 					remove('.$this->url_delete.', id_delete, "'.$this->id.'", callback_delete_'.$this->id.');
+ 				jQuery(".btn-delete-selected-'.$this->id_table.'").on("click", function() {
+ 					var id_delete = check_table_'.$this->id_table.'();
+ 					remove('.$this->url_delete.', id_delete, "'.$this->id_table.'", callback_delete_'.$this->id_table.');
  				});
 
- 				jQuery(".form-top-filter-hide-'.$this->id.'").on("click", function() {
- 					jQuery(".form-top-filter-body-'.$this->id.'").slideToggle("fast");
+ 				jQuery(".form-top-filter-hide-'.$this->id_table.'").on("click", function() {
+ 					jQuery(".form-top-filter-body-'.$this->id_table.'").slideToggle("fast");
  					jQuery(this).find(".fa").toggleClass("fa-chevron-circle-down fa-chevron-circle-up");
  				});
 
- 				jQuery("#'.$this->id.'_filter input").attr("placeholder", "'.$this->filter_placeholder.'");
+ 				jQuery("#'.$this->id_table.'_filter input").attr("placeholder", "'.$this->filter_placeholder.'");
 
 
-			function init_selected_table_'.$this->id.'() {
-				var selected = check_table_'.$this->id.'();
-				var btn_hide = jQuery(".btn-select-all-'.$this->id.', .btn-unselect-all-'.$this->id.', .btn-delete-selected-'.$this->id.', .selected-data-'.$this->id.$txt_selected_button.'");
+			function init_selected_table_'.$this->id_table.'() {
+				var selected = check_table_'.$this->id_table.'();
+				var btn_hide = jQuery(".btn-select-all-'.$this->id_table.', .btn-unselect-all-'.$this->id_table.', .btn-delete-selected-'.$this->id_table.', .selected-data-'.$this->id_table.$txt_selected_button.'");
 				if (selected.length > 0) {
 					btn_hide.show();
 				}
@@ -664,27 +696,27 @@ class CI_AZAppCRUD extends CI_AZ {
 				}
 			}
 
-		    function check_table_'.$this->id.'() {
-		    	var table_select = jQuery(".az-table#'.$this->id.' tbody tr.selected");
+		    function check_table_'.$this->id_table.'() {
+		    	var table_select = jQuery(".az-table#'.$this->id_table.' tbody tr.selected");
 		    	var arr_delete = [];
 		    	table_select.each(function() {
-		    		var check_data = jQuery(this).find(".btn-delete-'.$this->id.'").attr("data_id");
+		    		var check_data = jQuery(this).find(".btn-delete-'.$this->id_table.'").attr("data_id");
 		    		if (typeof check_data != "undefined") {
 		    			arr_delete.push(check_data);
 		    		}
 		    	});
-		    	jQuery(".selected-data-'.$this->id.'").text(arr_delete.length+" Data Terpilih");
+		    	jQuery(".selected-data-'.$this->id_table.'").text(arr_delete.length+" Data Terpilih");
 		    	return arr_delete;
 		    }
 
-		    function sel_un_all_'.$this->id.'(type) {
+		    function sel_un_all_'.$this->id_table.'(type) {
 		    	if (type == "select") {
-		    		jQuery(".az-table#'.$this->id.' tbody tr").addClass("selected");
+		    		jQuery(".az-table#'.$this->id_table.' tbody tr").addClass("selected");
 		    	}
 		    	else {
-		    		jQuery(".az-table#'.$this->id.' tbody tr").removeClass("selected");	
+		    		jQuery(".az-table#'.$this->id_table.' tbody tr").removeClass("selected");	
 		    	}
-		    	init_selected_table_'.$this->id.'();
+		    	init_selected_table_'.$this->id_table.'();
 		    }
 		';
 
@@ -851,7 +883,13 @@ class CI_AZAppCRUD extends CI_AZ {
 		$iDisplayLength = $iDisplayLength < 0 ? $iTotalRecords : $iDisplayLength; 
 		$iDisplayStart = intval(azarr($_REQUEST, 'iDisplayStart'));
 
-		$sEcho = intval(isset($_REQUEST['sEcho'])?1:$_REQUEST['sEcho']);
+		$sEcho = 1;
+		if (isset($_REQUEST['sEcho']) && $_REQUEST['sEcho'] != null) {
+			if (intval($_REQUEST['sEcho'])) {
+				$sEcho = $_REQUEST['sEcho'];
+			}
+		}
+		// $sEcho = intval(isset($_REQUEST['sEcho'])?1:$_REQUEST['sEcho']);
 
 		$this->ci->db->limit($iDisplayLength);
 		$this->ci->db->offset($iDisplayStart);
@@ -974,7 +1012,6 @@ class CI_AZAppCRUD extends CI_AZ {
 		}  
 
 		$ambil = $this->ci->db->get($table);
-// echo $this->ci->db->last_query();die;
 		$arr_column_show = array();
 		foreach($column_show as $ps_value){
 			$xvalue = explode(".", $ps_value);
@@ -999,15 +1036,16 @@ class CI_AZAppCRUD extends CI_AZ {
 
 			$btn_ = "";
 			if ($this->edit) {
-				$btn_ .= '<button class="btn btn-default btn-xs btn-edit-'.$this->id.'" data_id= "'.$value['id'.$table].'"><span class="glyphicon glyphicon-pencil"></span> '.azlang('Edit').'</button>';
+				$btn_ .= '<button class="btn btn-default btn-xs btn-edit-'.$this->id_table.'" data_id= "'.$value['id'.$table].'"><span class="glyphicon glyphicon-pencil"></span> '.azlang('Edit').'</button>';
 			}
 			if ($this->delete) {
-				$btn_ .= '<button class="btn btn-danger btn-xs btn-delete-'.$this->id.'" data_id= "'.$value['id'.$table].'"><span class="glyphicon glyphicon-remove"></span> '.azlang('Delete').'</button>';
+				$btn_ .= '<button class="btn btn-danger btn-xs btn-delete-'.$this->id_table.'" data_id= "'.$value['id'.$table].'"><span class="glyphicon glyphicon-remove"></span> '.azlang('Delete').'</button>';
 			}
 
 			if (strlen($this->custom_btn) > 0) {
 				$custom_button = $this->custom_btn;
-				//$btn_ .= $this->ci->$custom_button($value);
+				$btn_ .= $this->custom_btn;
+				// $btn_ .= '<button class="btn btn-xs data_id= "'.$value['id'.$table].'">'.azlang($this->custom_btn).'</button>';				
 			}
 
 			$arr_get["action"] = $btn_;

@@ -18,6 +18,8 @@ class CI_AZ {
 	protected $js = '';
 	protected $js_ready = '';
 	protected $js_view = '';
+	protected $id_table = '';
+	protected $default_id = 0;
 
 	public function __construct() {
 		$this->CI =& get_instance();
@@ -40,7 +42,13 @@ class CI_AZ {
 	}
 
 	public function set_id($data) {
-		return $this->id = $data;
+		$this->id = $data;
+		$this->id_table=$data;
+		return $data;
+	}
+
+	public function set_default_id($data){
+		return $this->default_id = $data;
 	}
 
 	public function set_name($data) {
@@ -57,6 +65,10 @@ class CI_AZ {
 
 	public function add_style($key, $value) {
 		return $this->style[$key] = $value;
+	}
+
+	public function set_id_table($data){
+		return $this->id_table = $data;
 	}
 
 }

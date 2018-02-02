@@ -6,87 +6,16 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active" id="tab_history">
 				<h4 class="text-center">History Transaksi Piutang & Deposit</h4>
-				<?php echo $history;?>
-				<?php var_dump($piutang);?>
+				<?php //echo $history;?>
+				<?php //var_dump($piutang);?>
+				<?= $piutang->render()?>
 				
 			</div>
 			<div role="tabpanel" class="tab-pane" id="tab_piutang">
-				<form class="filter form-inline">
-					<label for="saldo">Saldo: </label>
-					<select class="form-control" name="saldo" id="saldo">
-						<option value="" selected> -- --</option>
-						<option value="1"> > 300.000</option>
-						<option value="2"> < 300.000</option>
-					</select>
-					<label for="keyword">Cari: </label>
-					<input type="text" name="keyword" value="" id="keyword" placeholder="..." class="form-control">
-				</form>
-				<table class="az-table table table-bordered table-striped table-condensed table-hover dt-responsive display nowrap dataTable no-footer dtr-inline">
-					<thead>
-						<th>Nomer</th>
-						<th>NIK</th>
-						<th>ID Data Center</th>
-						<th>Nama</th>
-						<th>Departemen</th>
-						<th>Saldo</th>
-						<th>Sisa Limit</th>
-						<th>Aksi</th>
-					</thead>
-					<tbody>
-						<tr>
-							<td>19 Desember 2017</td>
-							<td>008</td>
-							<td>1212</td>
-							<td>Santi</td>
-							<td>Kasir</td>
-							<td>240.000</td>
-							<td>20.000</td>
-							<td class="text-center">
-								<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal_detailpiutang"><span class="glyphicon glyphicon-file"></span> Detail</button>
-								<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal_bayarpiutang"><span class="glyphicon glyphicon-usd"></span> Bayar</button>
-							</td>
-						</tr>
-						<tr>
-							<td>19 Desember 2017</td>
-							<td>008</td>
-							<td>1212</td>
-							<td>Santi</td>
-							<td>Kasir</td>
-							<td>240.000</td>
-							<td>20.000</td>
-							<td class="text-center">
-								<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal_detailpiutang"><span class="glyphicon glyphicon-file"></span> Detail</button>
-								<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal_bayarpiutang"><span class="glyphicon glyphicon-usd"></span> Bayar</button>
-							</td>
-						</tr>
-						<tr>
-							<td>19 Desember 2017</td>
-							<td>008</td>
-							<td>1212</td>
-							<td>Santi</td>
-							<td>Kasir</td>
-							<td>240.000</td>
-							<td>20.000</td>
-							<td class="text-center">
-								<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal_detailpiutang"><span class="glyphicon glyphicon-file"></span> Detail</button>
-								<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal_bayarpiutang"><span class="glyphicon glyphicon-usd"></span> Bayar</button>
-							</td>
-						</tr>
-						<tr>
-							<td>19 Desember 2017</td>
-							<td>008</td>
-							<td>1212</td>
-							<td>Santi</td>
-							<td>Kasir</td>
-							<td>240.000</td>
-							<td>20.000</td>
-							<td class="text-center">
-								<button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modal_detailpiutang"><span class="glyphicon glyphicon-file"></span> Detail</button>
-								<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#modal_bayarpiutang"><span class="glyphicon glyphicon-usd"></span> Bayar</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<h4 class="text-center">Transaksi Bayar</h4>
+				<?php //echo $history;?>
+				<?php //var_dump($piutang);?>
+				<?= $bayar->render()?>
 			</div>
 		</div>
 
