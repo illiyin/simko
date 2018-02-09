@@ -135,7 +135,6 @@ class CI_AZSelect2 extends CI_AZ{
 				jQuery("#'.$id_new.'").val("").trigger("change");
 			});';
 		}
-
 		$ci =& get_instance();
 		$ci->load->library('AZApp');
 		$azapp = $ci->azapp;
